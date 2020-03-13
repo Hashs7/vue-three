@@ -1,0 +1,1 @@
+export const randomInRange = (from, to)  => Math.random() * (to - from) + from;
