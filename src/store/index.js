@@ -6,7 +6,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    scene: null,
     camera: null,
     renderer: null,
     canvasRef: null,
@@ -21,6 +20,8 @@ export default new Vuex.Store({
       state.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
       state.camera.position.set(0, 0, 20);
       state.renderer = new THREE.WebGLRenderer({ canvas });
+      // dunno
+      state.renderer.setPixelRatio(window.devicePixelRatio);
     }
   },
   actions: {
