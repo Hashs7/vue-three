@@ -7,6 +7,7 @@
 <script>
 import * as THREE from 'three';
 // import  { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import gsap from 'gsap';
 
 export default {
     name: 'Test',
@@ -15,7 +16,7 @@ export default {
             controls: null,
             plane: null,
             cube: null,
-            step: 0.8,
+            step: 2,
         }
     },
     computed: {
@@ -40,7 +41,13 @@ export default {
     methods: {
         init() {
             this.scene.background = new THREE.Color(0x111111);
+
             this.camera.position.set(0, 5, 20);
+            gsap.to(this.camera.position, {
+                x: 0,
+                y: 5,
+                z: 20,
+            });
 
             /*this.controls = new OrbitControls(
               this.camera,
@@ -53,13 +60,12 @@ export default {
             // Ajouter un cube
             this.createCube(1, 1, 1, 0, 0.5,0, 0x00aa00);
             // Ajouter des controls sur le cube
-            document.addEventListener('keydown', event => this.move(event, this.cube));
             // Bloquer les bords du plan
+            document.addEventListener('keydown', event => this.move(event, this.cube));
             // Faire des spotlights
             // Faire balayer les spotlights
             // Détecter le cube dans un spotlight
             // Ajouter du son spatialisé
-
 
             this.mainLoop();
         },
@@ -90,6 +96,7 @@ export default {
         },
         destroy() {
             this.scene.remove(this.plane);
+            this.scene.remove(this.cube);
         },
         logPosition() {
             //console.log(this.controls);
@@ -98,16 +105,28 @@ export default {
             event.preventDefault();
             switch (event.code) {
                 case 'ArrowUp' :
-                    object.position.z -= object.position.z >= -14 ? this.step : 0;
+                    //object.position.z -= object.position.z >= -14 ? this.step : 0;
+                    gsap.to(object.position, {
+                        z: object.position.z - this.step,
+                    });
                     break;
                 case 'ArrowDown' :
-                    object.position.z += object.position.z <= 14 ? this.step : 0;
+                    //object.position.z += object.position.z <= 14 ? this.step : 0;
+                    gsap.to(object.position, {
+                        z: object.position.z + this.step,
+                    });
                     break;
                 case 'ArrowLeft' :
-                    object.position.x -= object.position.x >= -4 ? this.step : 0;
+                    //object.position.x -= object.position.x >= -4 ? this.step : 0;
+                    gsap.to(object.position, {
+                        x: object.position.x - this.step,
+                    });
                     break;
                 case 'ArrowRight' :
-                    object.position.x += object.position.x <= 4 ? this.step : 0;
+                    //object.position.x += object.position.x <= 4 ? this.step : 0;
+                    gsap.to(object.position, {
+                        x: object.position.x + this.step,
+                    });
                     break;
             }
         }

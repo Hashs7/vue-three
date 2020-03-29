@@ -3,7 +3,7 @@
     <nav class="router">
       <router-link to="/" class="router__link">Home</router-link>
       <router-link to="/lights" class="router__link">Lights</router-link>
-      <router-link to="/test" class="router__link">Test</router-link>
+      <router-link to="/camera" class="router__link">Camera</router-link>
     </nav>
     <router-view/>
     <canvas ref="canvas" />
