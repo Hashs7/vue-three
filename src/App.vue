@@ -4,6 +4,7 @@
       <router-link to="/" class="router__link">Home</router-link>
       <router-link to="/lights" class="router__link">Lights</router-link>
       <router-link to="/camera" class="router__link">Camera</router-link>
+      <router-link to="/character" class="router__link">Character</router-link>
     </nav>
     <router-view />
     <canvas ref="canvas" />

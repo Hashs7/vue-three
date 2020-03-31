@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button class="btn" @click="logPosition">log position</button>
-    <button class="btn" @click="addsky">Add skybox</button>
+    <button class="btn" @click="playAnimation">Play animation</button>
   </div>
 </template>
 
@@ -25,6 +24,8 @@
           right: false,
         },
         character: null,
+        mixer: null,
+        animations: null,
         light: null,
         skybox: null,
         width: null,
@@ -79,6 +80,9 @@
       },
       mainLoop() {
         // this.controls.autoRotate = autoRotate;
+        if (this.mixer) {
+          this.mixer.update( 0.01 );
+        }
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.mainLoop);
       },
@@ -121,6 +125,7 @@
               y: toRadian(180),
               duration: 3,
             });
+            this.animations = gltf.animations[1];
             this.character = gltf.scene.children[0];
             this.character.add(this.camera);
             this.camera.lookAt(this.character.position.x, this.character.position.y, this.character.position.z + 20);
@@ -132,6 +137,16 @@
             console.error('An error happened', error);
           }
         );
+      },
+      playAnimation() {
+        console.log('play');
+        this.mixer = new THREE.AnimationMixer( this.character );
+        // var clip = THREE.AnimationClip.findByName( this.animations, 'dance' );
+        const action = this.mixer.clipAction( this.animations );
+        console.log(this.animations);
+        console.log(action);
+
+        action.play();
       },
       keydown(e) {
         switch (e.which) {

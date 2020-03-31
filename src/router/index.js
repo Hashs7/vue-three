@@ -3,8 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Lights from '../views/Lights.vue';
 import Camera from '../views/Camera.vue';
-import Gooey from "../views/Gooey";
-import Map from "../views/Map";
+import Character from "../views/Character";
 
 Vue.use(VueRouter);
 
@@ -25,14 +24,9 @@ const routes = [
     component: Camera,
   },
   {
-    path: '/gooey',
-    name: 'gooey',
-    component: Gooey,
-  },
-  {
-    path: '/map',
-    name: 'map',
-    component: Map,
+    path: '/character',
+    name: 'character',
+    component: Character,
   },
 ];
 
