@@ -10,7 +10,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import gsap from 'gsap';
 
 export default {
-  name: 'Home',
+  name: 'Lights',
   components: {
   },
   data() {

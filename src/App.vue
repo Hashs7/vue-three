@@ -5,7 +5,7 @@
       <router-link to="/lights" class="router__link">Lights</router-link>
       <router-link to="/camera" class="router__link">Camera</router-link>
     </nav>
-    <router-view/>
+    <router-view />
     <canvas ref="canvas" />
   </div>
 </template>
@@ -30,6 +30,7 @@
     mounted() {
       this.$store.commit('initScene', this.$refs.canvas);
       this.resize();
+      window.addEventListener('resize', this.resize)
     },
     methods: {
       resize() {

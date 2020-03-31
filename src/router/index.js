@@ -1,8 +1,10 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Lights from '../views/Lights.vue'
-import Camera from '../views/Camera.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
+import Lights from '../views/Lights.vue';
+import Camera from '../views/Camera.vue';
+import Gooey from "../views/Gooey";
+import Map from "../views/Map";
 
 Vue.use(VueRouter);
 
@@ -10,24 +12,34 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/lights',
     name: 'lights',
-    component: Lights
+    component: Lights,
   },
   {
     path: '/camera',
     name: 'camera',
-    component: Camera
-  }
+    component: Camera,
+  },
+  {
+    path: '/gooey',
+    name: 'gooey',
+    component: Gooey,
+  },
+  {
+    path: '/map',
+    name: 'map',
+    component: Map,
+  },
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
 export default router
