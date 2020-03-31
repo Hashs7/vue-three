@@ -11,6 +11,7 @@
   import gsap from 'gsap';
   import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
   import { toRadian } from "../utils";
+  import { TextureLoader } from "three/src/loaders/TextureLoader";
 
   export default {
     name: 'Map',
@@ -53,35 +54,8 @@
       init() {
         window.addEventListener('keydown', this.keydown);
         window.addEventListener('keyup', this.keyup);
-        new GLTFLoader().load('./models/women-walking.glb', (gltf) => {
-            gltf.scene.scale.set(0.2, 0.2, 0.2);
-            gltf.scene.position.set(0, 0, 0);
-            this.scene.add(gltf.scene);
-            console.log(gltf);
-            // const euler = new THREE.Euler( 0, toRadian(180), 0, 'XYZ' );
-            // gltf.scene.children[0].position.applyEuler(euler);
 
-            gsap.to(gltf.scene.children[0].rotation, {
-              y: toRadian(180),
-              duration: 10,
-            });
-            this.character = gltf.scene.children[0];
-            this.character.add(this.camera)
-            this.camera.lookAt(this.character.position);
 
-          },
-          (xhr) => {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-          },
-          (error) => {
-            console.error('An error happened', error);
-          }
-        );
-        const geometry = new THREE.BoxGeometry(500, 1, 500);
-        const material = new THREE.MeshPhongMaterial({ color: 0X693421, side: THREE.DoubleSide });
-        const plane = new THREE.Mesh(geometry, material);
-        // plane.position.y = -1;
-        this.scene.add(plane);
         this.camera.maxDistance = 5000;
         this.light = new THREE.HemisphereLight(0xffffff, 0x000000, 5);
         this.scene.add(this.light);
@@ -90,8 +64,8 @@
 
         gsap.to(this.camera.position, {
           x: 0.5,
-          y: 300,
-          z: 200,
+          y: 250,
+          z: -100,
           duration: 4,
         });
         // this.camera.position.set(1200, -250, 2000);
@@ -99,6 +73,8 @@
          this.controls = new OrbitControls( this.camera, this.$store.state.canvasRef);
          this.controls.update();*/
         this.addSkybox()
+        this.addCharacter()
+        this.addFloor()
         this.mainLoop()
       },
       mainLoop() {
@@ -115,6 +91,47 @@
       addsky() {
         this.scene.add(this.skybox);
         console.log(this.skybox);
+      },
+      addFloor() {
+        new TextureLoader().load('./assets/textures/FloorsCheckerboard_S_Diffuse.jpg', (texture) => {
+            const geometry = new THREE.BoxGeometry(500, 1, 500);
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+            const plane = new THREE.Mesh(geometry, material);
+            // plane.position.y = -1;
+            this.scene.add(plane);
+          },
+          (xhr) => {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+          },
+          (error) => {
+            console.error('An error happened', error);
+          }
+        );
+      },
+      addCharacter() {
+        new GLTFLoader().load('./models/women-walking.glb', (gltf) => {
+            gltf.scene.scale.set(0.2, 0.2, 0.2);
+            gltf.scene.position.set(0, 0, 0);
+            this.scene.add(gltf.scene);
+            console.log(gltf);
+            // const euler = new THREE.Euler( 0, toRadian(180), 0, 'XYZ' );
+            // gltf.scene.children[0].position.applyEuler(euler);
+
+            gsap.to(gltf.scene.children[0].rotation, {
+              y: toRadian(180),
+              duration: 3,
+            });
+            this.character = gltf.scene.children[0];
+            this.character.add(this.camera);
+            this.camera.lookAt(this.character.position.x, this.character.position.y, this.character.position.z + 20);
+          },
+          (xhr) => {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+          },
+          (error) => {
+            console.error('An error happened', error);
+          }
+        );
       },
       keydown(e) {
         switch (e.which) {
@@ -157,7 +174,7 @@
         }
       },
       createPathStrings(filename) {
-        const basePath = "assets/skybox/";
+        const basePath = "./assets/skybox/";
         const baseFilename = basePath + filename;
         const fileType = ".png";
         const sides = ["ft", "bk", "up", "dn", "rt", "lf"];
