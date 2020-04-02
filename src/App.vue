@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Loader />
     <nav class="router">
       <router-link to="/" class="router__link">Home</router-link>
       <router-link to="/lights" class="router__link">Lights</router-link>
@@ -12,8 +13,13 @@
 </template>
 
 <script>
+  import Loader from '@/components/Loader';
+
   export default {
     name: 'App',
+    components: {
+      Loader,
+    },
     data() {
       return {
         width: 0,

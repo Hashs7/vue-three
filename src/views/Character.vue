@@ -8,7 +8,7 @@
   import * as THREE from 'three'
   import { TextureLoader } from "three/src/loaders/TextureLoader";
   import { Character } from "../components/Character";
-  import { LoadManager } from "../components/LoadManager";
+  import LoadManager from "../components/LoadManager";
 
   export default {
     name: 'Map',
@@ -57,7 +57,7 @@
          this.controls = new OrbitControls( this.camera, this.$store.state.canvasRef);
          this.controls.update();*/
         this.addSkybox();
-        const loader = new LoadManager();
+        const loader = LoadManager;
         loader.loadGLTF('./models/soldier.glb', (gltf) => {
           this.character = new Character(gltf, this.camera);
           this.scene.add(this.character.group);

@@ -1,50 +1,50 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import * as THREE from "three";
 
-export class LoadManager {
+class LoadManager {
   printProgress = false;
-  gltfLoader;
   loadingTracker = {};
+  manager;
+  gltfLoader;
+  receiver;
 
   constructor() {
-    this.gltfLoader = new GLTFLoader();
+    this.manager = new THREE.LoadingManager();
+    this.gltfLoader = new GLTFLoader(this.manager);
+
+    this.manager.onStart = (url, itemsLoaded, itemsTotal) => this.startHandler(url, itemsLoaded, itemsTotal);
+    this.manager.onLoad = () => this.loadedHandler();
+    this.manager.onProgress = (url, itemsLoaded, itemsTotal) => this.progressHandler( url, itemsLoaded, itemsTotal );
+    this.manager.onError = ( url ) => this.errorHandler(url);
   }
 
   loadGLTF(path, onLoadingFinished) {
-    this.startLoading(path);
-    this.gltfLoader.load(path,
-    (gltf) => {
-      onLoadingFinished(gltf);
-      this.doneLoading(path);
-    },
-    (xhr) => {
-      if (!this.printProgress) return;
-      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-    },
-    (error) => console.error(error));
+    this.gltfLoader.load(path, (gltf) => onLoadingFinished(gltf));
   }
 
-  startLoading(path) {
-    this.loadingTracker[path] = true;
-    // Trigger loader
-    // document.getElementById('loader').style.display = 'flex';
-    // document.getElementById('ui-container').style.display = 'none';
+  setReceiver(receiver) {
+    this.receiver = receiver;
   }
 
-  doneLoading(path) {
-    this.loadingTracker[path] = false;
+  startHandler(url, itemsLoaded, itemsTotal) {
+    console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+  }
 
-    let done = true;
-/*    for (const key in this.loadingTracker) {
-      if (this.loadingTracker.hasOwnProperty(key)) {
-        const stillLoading = this.loadingTracker[key];
-        if (stillLoading) done = false;
-      }
-    }*/
+  loadedHandler() {
+    console.log( 'Loading complete!');
+  }
 
-    if (done) {
-      // Hide loader
-      // document.getElementById('loader').style.display = 'none';
-      // document.getElementById('ui-container').style.display = 'block';
-    }
+  progressHandler( url, itemsLoaded, itemsTotal ) {
+    console.log(`${itemsLoaded / itemsTotal * 100 | 0}%`);
+    console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    if(!this.receiver) return;
+    console.log(this.receiver);
+    this.receiver.progressHandler(itemsLoaded / itemsTotal * 100 | 0)
+  }
+
+  errorHandler( url ) {
+    console.error( 'There was an error loading ' + url );
   }
 }
+
+export default new LoadManager();
