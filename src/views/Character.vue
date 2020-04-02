@@ -47,7 +47,7 @@
     methods: {
       init() {
         // this.camera.maxDistance = 5000;
-        this.light = new THREE.HemisphereLight(0xffffff, 0x000000, 5);
+        this.light = new THREE.HemisphereLight(0xffffff, 0x444444);
         this.scene.add(this.light);
         // this.scene.add(this.lightHelper);
 
@@ -58,7 +58,7 @@
          this.controls.update();*/
         this.addSkybox();
         const loader = new LoadManager();
-        loader.loadGLTF('./models/women-walking.glb', (gltf) => {
+        loader.loadGLTF('./models/soldier.glb', (gltf) => {
           this.character = new Character(gltf, this.camera);
           this.scene.add(this.character.group);
         })
@@ -67,8 +67,8 @@
       },
       mainLoop() {
         // this.controls.autoRotate = autoRotate;
-        if (this.mixer) {
-          this.mixer.update( 0.01 );
+        if (this.character) {
+          this.character.update()
         }
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.mainLoop);
