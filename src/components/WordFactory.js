@@ -10,7 +10,6 @@ export default class WordFactory {
     this.loader = new THREE.FontLoader();
     this.words = [];
     this.offset = this.words.length * margin * 0.5;
-    console.log(this.offset, 'offset');
 
     this.loader.load('./assets/fonts/Anton/Anton-Regular.json', f => this.setup(f));
   }
@@ -56,17 +55,13 @@ export default class WordFactory {
 
       const mesh = new THREE.Mesh(geometry, material);
       mesh.size = mesh.geometry.boundingBox.getSize(new THREE.Vector3());
-      console.log('letter size', mesh.size.x);
       // We'll use this accumulator to get the offset of each letter. Notice that this is not perfect because each character of each font has specific kerning.
       words.letterOff += mesh.size.x;
-      console.log('letterOff', words.letterOff);
 
       // Create the shape of our letter
       // Note that we need to scale down our geometry because of Box's Cannon.js class setup
       const box = new Box(new Vec3().copy(mesh.size).scale(0.5));
       // Attach the body directly to the mesh
-      console.log('newoffset', this.words.length, this.getOffsetY(this.words.length));
-      console.log(totalMass / text.length);
       mesh.body = new Body({
         // We divide the totalmass by the length of the string to have a common weight for each words.
         mass: totalMass / text.length,
@@ -86,7 +81,6 @@ export default class WordFactory {
 
     this.words.push(words);
     this.scene.add(words);
-    console.log(words);
   }
 
   update() {
@@ -103,7 +97,6 @@ export default class WordFactory {
   }
 
   getOffsetY(i) {
-    console.log("offsetY", (this.words.length - i + 1));
     return (this.words.length - i + 1) * margin - this.offset;
   }
 }

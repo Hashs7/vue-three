@@ -91,9 +91,6 @@
         this.scene.remove(this.light);
         this.scene.remove(this.lightHelper);
       },
-      logPosition() {
-        console.log(this.camera);
-      },
     },
   }
 </script>
