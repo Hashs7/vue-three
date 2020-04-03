@@ -137,7 +137,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .btn {
     position: absolute;
     top: 16px;

@@ -18,19 +18,17 @@
     name: "Loader",
     data() {
       return {
-        isLoading: true,
+        isLoading: false,
         percent: 0,
       }
     },
     mounted() {
       const loaderInstance = LoadManager;
-      console.log(LoadManager);
       loaderInstance.setReceiver(this);
     },
     methods: {
       progressHandler(percent) {
         this.percent = percent;
-        console.log(percent,' percent');
         if (percent !== 100) return;
         setTimeout(() => this.isLoading = false, 200)
       }

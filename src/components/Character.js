@@ -23,7 +23,7 @@ export class Character {
     this.character = gltf.scene.children[0];
     console.log(this.character);
     this.camera = camera;
-    this.camera.position.set(0.5, 250, -100);
+    this.camera.position.set(0, 250, -150);
 
     this.group = new THREE.Group();
     this.group.add(this.character);
@@ -106,10 +106,9 @@ export class Character {
     this.actions = [this.idleAction, this.walkAction];
   }
 
-  prepareCrossFade( startAction, endAction, defaultDuration ) {
+  prepareCrossFade( startAction, endAction, duration = 0.3 ) {
     // Switch default / custom crossfade duration (according to the user's choice)
     // const duration = this.setCrossFadeDuration( defaultDuration );
-    const duration = 0.3;
     this.unPauseAllActions();
     this.executeCrossFade( startAction, endAction, duration );
 

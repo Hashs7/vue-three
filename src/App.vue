@@ -6,6 +6,7 @@
       <router-link to="/lights" class="router__link">Lights</router-link>
       <router-link to="/camera" class="router__link">Camera</router-link>
       <router-link to="/character" class="router__link">Character</router-link>
+      <router-link to="/word" class="router__link">Word</router-link>
     </nav>
     <router-view />
     <canvas ref="canvas" />

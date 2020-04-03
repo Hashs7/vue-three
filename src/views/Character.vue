@@ -11,7 +11,7 @@
   import LoadManager from "../components/LoadManager";
 
   export default {
-    name: 'Map',
+    name: 'Character',
     components: {},
     data() {
       return {
@@ -59,9 +59,16 @@
         this.addSkybox();
         const loader = LoadManager;
         loader.loadGLTF('./models/soldier.glb', (gltf) => {
+          console.log(gltf);
           this.character = new Character(gltf, this.camera);
           this.scene.add(this.character.group);
         })
+        loader.loadGLTF('./models/pilier.glb', (gltf) => {
+          console.log('pilier', gltf);
+          gltf.scene.scale.set(20, 20, 20);
+          gltf.scene.position.set(10, 0, 10);
+          this.scene.add(gltf.scene);
+        });
         this.addFloor();
         this.mainLoop();
       },
@@ -139,7 +146,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .btn {
     position: absolute;
     top: 16px;

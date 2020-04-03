@@ -2,8 +2,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 
 class LoadManager {
-  printProgress = false;
-  loadingTracker = {};
+  // printProgress = false;
+  // loadingTracker = {};
   manager;
   gltfLoader;
   receiver;
@@ -27,18 +27,15 @@ class LoadManager {
   }
 
   startHandler(url, itemsLoaded, itemsTotal) {
-    console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    console.log('start ', url, itemsLoaded, itemsTotal);
   }
 
   loadedHandler() {
-    console.log( 'Loading complete!');
   }
 
   progressHandler( url, itemsLoaded, itemsTotal ) {
     console.log(`${itemsLoaded / itemsTotal * 100 | 0}%`);
-    console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
     if(!this.receiver) return;
-    console.log(this.receiver);
     this.receiver.progressHandler(itemsLoaded / itemsTotal * 100 | 0)
   }
 

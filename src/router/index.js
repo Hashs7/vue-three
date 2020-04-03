@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Lights from '../views/Lights.vue';
 import Camera from '../views/Camera.vue';
 import Character from "../views/Character";
+import Word from "../views/Word";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/character',
     name: 'character',
     component: Character,
+  },
+  {
+    path: '/word',
+    name: 'word',
+    component: Word,
   },
 ];
 

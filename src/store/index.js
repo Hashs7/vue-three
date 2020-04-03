@@ -22,6 +22,10 @@ export default new Vuex.Store({
       state.renderer = new THREE.WebGLRenderer({ canvas });
       // dunno
       state.renderer.setPixelRatio(window.devicePixelRatio);
+    },
+    changeScene(state, { scene, camera }) {
+      state.scene = scene;
+      state.camera = camera;
     }
   },
   actions: {
