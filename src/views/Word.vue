@@ -12,12 +12,14 @@
   import LoadManager from "../components/LoadManager";
   import NWordScene from "../components/NWordScene";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+  import Stats from "stats.js";
 
   export default {
     name: 'Word',
     components: {},
     data() {
       return {
+        stats: null,
         text: null,
         scene: null,
         camera: null,
@@ -39,6 +41,9 @@
     },
     methods: {
       init() {
+        this.stats = new Stats();
+        this.stats.showPanel( 0 );
+        document.body.appendChild( this.stats.dom );
         const wordScene = new NWordScene();
         // this.$store.commit('changeScene', wordScene);
         console.log('wordScene', wordScene);
@@ -56,11 +61,13 @@
         this.mainLoop();
       },
       mainLoop() {
+        this.stats.begin();
         if (this.world) {
           this.world.update();
         }
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
+        this.stats.end();
         requestAnimationFrame(this.mainLoop);
       },
       addWord() {
