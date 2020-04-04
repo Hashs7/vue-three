@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import gsap from 'gsap';
 import { toRadian } from "../utils";
 import { InputManager } from "./InputManager";
-import * as dat from 'dat.gui';
 
 export class Character {
   camera;
@@ -35,48 +34,6 @@ export class Character {
     this.mixer = new THREE.AnimationMixer(this.character);
     this.setAnimations(gltf.animations);
     this.activateAllActions();
-    this.lookAtObject = new THREE.Vector3(this.group.position.x, this.group.position.y, this.group.position.z)
-    this.camera.lookAt(this.lookAtObject.x, this.lookAtObject.y, this.lookAtObject.z);
-    this.buildGUI();
-  }
-
-  buildGUI() {
-    const gui = new dat.GUI();
-
-    const folderPosition = gui.addFolder('Camera position');
-    const folderLookAt = gui.addFolder('Camera look at');
-    const paramsPosition = {
-      x: this.camera.position.x,
-      y: this.camera.position.y,
-      z: this.camera.position.z,
-    };
-    const paramsLookAt = {
-      x: this.lookAtObject.x,
-      y: this.lookAtObject.y,
-      z: this.lookAtObject.z,
-    };
-    folderPosition.add(paramsPosition, 'x', -1000, 1000).onChange(() => this.updateCamera(paramsPosition));
-    folderPosition.add(paramsPosition, 'y', -1000, 1000).onChange(() => this.updateCamera(paramsPosition));
-    folderPosition.add(paramsPosition, 'z', -1000, 1000).onChange(() => this.updateCamera(paramsPosition));
-    folderPosition.open();
-
-    folderLookAt.add(paramsLookAt, 'x', -1000, 1000).onChange(() => this.updateLookAt(paramsLookAt));
-    folderLookAt.add(paramsLookAt, 'y', -1000, 1000).onChange(() => this.updateLookAt(paramsLookAt));
-    folderLookAt.add(paramsLookAt, 'z', -1000, 1000).onChange(() => this.updateLookAt(paramsLookAt));
-    folderLookAt.open();
-  }
-
-  updateCamera(params) {
-    this.camera.position.set(params.x, params.y, params.z)
-  }
-
-  updateLookAt(params) {
-    this.lookAtObject = { ...params };
-    this.camera.lookAt(
-      this.lookAtObject.x + this.group.position.x,
-      this.lookAtObject.y + this.group.position.y,
-      this.lookAtObject.z + this.group.position.z,
-    );
   }
 
   handleKeyboardEvent(event, code, pressed) {
