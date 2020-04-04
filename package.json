@@ -10,6 +10,7 @@
   "dependencies": {
     "cannon-es": "^0.8.7",
     "core-js": "^3.6.4",
+    "dat.gui": "^0.7.7",
     "gsap": "^3.2.2",
     "stats.js": "^0.17.0",
     "three": "^0.113.2",

@@ -8,8 +8,6 @@
 <script>
   import * as THREE from 'three'
   import { TextureLoader } from "three/src/loaders/TextureLoader";
-  import { Character } from "../components/Character";
-  import LoadManager from "../components/LoadManager";
   import NWordScene from "../components/NWordScene";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
   import Stats from "stats.js";

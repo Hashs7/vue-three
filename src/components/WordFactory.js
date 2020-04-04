@@ -33,20 +33,24 @@ export default class WordFactory {
       position: new Vec3(0, this.words.length * margin - this.offset, 0)
     });
 
+    ground.addEventListener('collide', (e) => {
+      console.log('collide ', e);
+    })
+
     this.world.addBody(ground);
 
     this.addWord('Pute');
   }
 
   addWord(text) {
-    const totalMass = 100;
+    const totalMass = 10;
     const words = new THREE.Group();
     words.letterOff = 0;
     this.offset = this.words.length * margin * 0.5;
 
 
     // ... and parse each letter to generate a mesh
-    Array.from(text).forEach((letter, j) => {
+    Array.from(text).forEach((letter) => {
       const material = new THREE.MeshPhongMaterial({ color: 0x97df5e });
       const geometry = new THREE.TextBufferGeometry(letter, this.fontOption);
 
@@ -60,7 +64,6 @@ export default class WordFactory {
 
       // Create the shape of our letter
       // Note that we need to scale down our geometry because of Box's Cannon.js class setup
-      const box = new Box(new Vec3().copy(mesh.size).scale(0.5));
       // Attach the body directly to the mesh
       mesh.body = new Body({
         // We divide the totalmass by the length of the string to have a common weight for each words.
@@ -70,6 +73,7 @@ export default class WordFactory {
 
       // Add the shape to the body and offset it to match the center of our mesh
       const { center } = mesh.geometry.boundingSphere;
+      const box = new Box(new Vec3().copy(mesh.size).scale(0.5));
       mesh.body.addShape(box, new Vec3(center.x, center.y, center.z));
       this.world.addBody(mesh.body);
       words.add(mesh);
@@ -86,7 +90,7 @@ export default class WordFactory {
   update() {
     if (!this.words.length) return;
 
-    this.words.forEach((word, j) => {
+    this.words.forEach((word) => {
       for (let i = 0; i < word.children.length; i++) {
         const letter = word.children[i];
 
