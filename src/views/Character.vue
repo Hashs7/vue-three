@@ -52,6 +52,14 @@
          this.controls = new OrbitControls( this.camera, this.$store.state.canvasRef);
          this.controls.update();
          */
+        /*
+         loader.loadGLTF('./models/pilier.glb', (gltf) => {
+         console.log('pilier', gltf);
+         gltf.scene.scale.set(20, 20, 20);
+         gltf.scene.position.set(10, 0, 10);
+         this.scene.add(gltf.scene);
+         });
+         */
         this.addSkybox();
         const loader = LoadManager;
         loader.loadGLTF('./models/soldier.glb', (gltf) => {
@@ -61,18 +69,12 @@
           this.initLookAtObject();
           this.buildGUI();
         });
-        loader.loadGLTF('./models/pilier.glb', (gltf) => {
-          console.log('pilier', gltf);
-          gltf.scene.scale.set(20, 20, 20);
-          gltf.scene.position.set(10, 0, 10);
-          this.scene.add(gltf.scene);
-        });
+
         this.addFloor();
         this.mainLoop();
       },
 
       mainLoop() {
-        // this.controls.autoRotate = autoRotate;
         if (this.character) {
           this.character.update()
         }
@@ -80,10 +82,9 @@
         requestAnimationFrame(this.mainLoop);
       },
 
-
       addSkybox() {
         const materialArray = this.createMaterialArray('afterrain');
-        const skyboxGeo = new THREE.BoxGeometry(2000, 2000, 2000);
+        const skyboxGeo = new THREE.BoxGeometry(8000, 8000, 8000);
         this.skybox = new THREE.Mesh(skyboxGeo, materialArray);
         this.addsky()
       },
@@ -194,11 +195,3 @@
   }
 </script>
 
-<style scoped>
-  .btn {
-    position: absolute;
-    top: 16px;
-    right: 32px;
-    padding: 10px 20px;
-  }
-</style>

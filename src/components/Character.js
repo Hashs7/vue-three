@@ -21,7 +21,6 @@ export class Character {
     gltf.scene.scale.set(0.2, 0.2, 0.2);
     gltf.scene.position.set(0, 0, 0);
     this.character = gltf.scene.children[0];
-    console.log(this.character);
     this.camera = camera;
     this.camera.position.set(0, 250, -150);
 
@@ -86,12 +85,6 @@ export class Character {
       default:
         break;
     }
-
-    this.camera.lookAt(
-      this.lookAtObject.x + this.group.position.x,
-      this.lookAtObject.y + this.group.position.y,
-      this.lookAtObject.z + this.group.position.z,
-    );
   }
 
   update() {
