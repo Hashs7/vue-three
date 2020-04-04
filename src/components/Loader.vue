@@ -3,7 +3,7 @@
     <div v-if="isLoading" class="modal">
       <div class="loader">
         <div class="loader__container">
-          <span class="loader__progress" :style="`width: ${percent}%`"></span>
+          <span ref="progress" class="loader__progress"></span>
         </div>
         <span class="loader__percent">{{percent}}%</span>
       </div>
@@ -13,13 +13,18 @@
 
 <script>
   import LoadManager from "./LoadManager";
+  import gsap from 'gsap';
 
   export default {
     name: "Loader",
     data() {
       return {
-        isLoading: false,
         percent: 0,
+      }
+    },
+    computed: {
+      isLoading() {
+        return this.$store.state.isLoading;
       }
     },
     mounted() {
@@ -28,9 +33,24 @@
     },
     methods: {
       progressHandler(percent) {
-        this.percent = percent;
+        const percentValue = this.percent < percent ? percent : this.percent;
+        this.updateUI(percentValue);
         if (percent !== 100) return;
-        setTimeout(() => this.isLoading = false, 200)
+        setTimeout(() => {
+          this.$store.commit('setLoader', false);
+          this.percent = 0;
+          this.updateUI(0);
+        }, 500)
+      },
+      updateUI(value) {
+        gsap.to(this, {
+          percent: value,
+          duration: .05,
+        });
+        gsap.to(this.$refs.progress, {
+          width: `${value}%`,
+          duration: .1,
+        });
       }
     },
   }
@@ -70,6 +90,7 @@
   }
   .loader__progress {
     display: block;
+    width: 0;
     height: 100%;
     background-color: #fff;
     transition: width .2s ease-in-out;

@@ -6,8 +6,6 @@
 </template>
 
 <script>
-  import * as THREE from 'three'
-  import { TextureLoader } from "three/src/loaders/TextureLoader";
   import NWordScene from "../components/NWordScene";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
   import Stats from "stats.js";
@@ -51,7 +49,6 @@
         this.factory = wordScene.factory;
 
         this.controls = new OrbitControls(this.camera, this.$store.state.canvasRef);
-        this.controls.update();
 
         this.renderer.setClearColor(0x202533);
         this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -69,32 +66,11 @@
         requestAnimationFrame(this.mainLoop);
       },
       addWord() {
-        console.log(this.factory);
         this.factory.addWord(this.text);
       },
-      addFloor() {
-        new TextureLoader().load('./assets/textures/FloorsCheckerboard_S_Diffuse.jpg', (texture) => {
-            const geometry = new THREE.BoxGeometry(500, 1, 500);
-            const material = new THREE.MeshBasicMaterial({ map: texture });
-            const plane = new THREE.Mesh(geometry, material);
-            // plane.position.y = -1;
-            this.scene.add(plane);
-          },
-          (xhr) => {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-          },
-          (error) => {
-            console.error('An error happened', error);
-          }
-        );
-      },
       destroy() {
-        this.objs.forEach(obj => this.scene.remove(obj));
-        this.scene.remove(this.targetObject);
-        this.scene.remove(this.spotLight);
-        this.scene.remove(this.spotLightHelper);
-        this.scene.remove(this.light);
-        this.scene.remove(this.lightHelper);
+        this.controls.enabled = false;
+        document.body.removeChild( this.stats.dom );
       },
     },
   }

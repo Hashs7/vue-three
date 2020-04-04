@@ -9,6 +9,7 @@ export default new Vuex.Store({
     camera: null,
     renderer: null,
     canvasRef: null,
+    isLoading: false,
   },
   mutations: {
     initScene(state, canvas) {
@@ -26,7 +27,10 @@ export default new Vuex.Store({
     changeScene(state, { scene, camera }) {
       state.scene = scene;
       state.camera = camera;
-    }
+    },
+    setLoader(state, value) {
+      state.isLoading = value;
+    },
   },
   actions: {
   },

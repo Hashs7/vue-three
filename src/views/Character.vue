@@ -14,6 +14,7 @@
     name: 'Character',
     data() {
       return {
+        gui: null,
         lookAtObject: null,
         character: null,
         mixer: null,
@@ -46,20 +47,13 @@
     },
     methods: {
       init() {
+        this.$store.commit('setLoader', true);
+        this.$store.commit('changeScene', {
+          scene: new THREE.Scene(),
+          camera: this.camera,
+        });
         this.light = new THREE.HemisphereLight(0xffffff, 0x444444);
         this.scene.add(this.light);
-         /*
-         this.controls = new OrbitControls( this.camera, this.$store.state.canvasRef);
-         this.controls.update();
-         */
-        /*
-         loader.loadGLTF('./models/pilier.glb', (gltf) => {
-         console.log('pilier', gltf);
-         gltf.scene.scale.set(20, 20, 20);
-         gltf.scene.position.set(10, 0, 10);
-         this.scene.add(gltf.scene);
-         });
-         */
         this.addSkybox();
         const loader = LoadManager;
         loader.loadGLTF('./models/soldier.glb', (gltf) => {
@@ -69,7 +63,6 @@
           this.initLookAtObject();
           this.buildGUI();
         });
-
         this.addFloor();
         this.mainLoop();
       },
@@ -101,14 +94,7 @@
             const plane = new THREE.Mesh(geometry, material);
             // plane.position.y = -1;
             this.scene.add(plane);
-          },
-          (xhr) => {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-          },
-          (error) => {
-            console.error('An error happened', error);
-          }
-        );
+          });
       },
 
       createPathStrings(filename) {
@@ -116,11 +102,7 @@
         const baseFilename = basePath + filename;
         const fileType = ".jpg";
         const sides = ["ft", "bk", "up", "dn", "rt", "lf"];
-        const pathStings = sides.map(side => {
-          return baseFilename + "_" + side + fileType;
-        });
-
-        return pathStings;
+        return sides.map(side => baseFilename + "_" + side + fileType);
       },
 
       createMaterialArray(filename) {
@@ -128,19 +110,13 @@
         const skyboxImagepaths = this.createPathStrings(filename);
         const materialArray = skyboxImagepaths.map(image => {
           let texture = new THREE.TextureLoader().load(image);
-
           return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
         });
         return materialArray;
       },
 
       destroy() {
-        this.objs.forEach(obj => this.scene.remove(obj));
-        this.scene.remove(this.targetObject);
-        this.scene.remove(this.spotLight);
-        this.scene.remove(this.spotLightHelper);
-        this.scene.remove(this.light);
-        this.scene.remove(this.lightHelper);
+        this.gui.destroy();
       },
 
       initLookAtObject() {
@@ -155,9 +131,9 @@
       },
 
       buildGUI() {
-        const gui = new dat.GUI();
-        const folderPosition = gui.addFolder('Camera position');
-        const folderLookAt = gui.addFolder('Camera look at');
+        this.gui = new dat.GUI();
+        const folderPosition = this.gui.addFolder('Camera position');
+        const folderLookAt = this.gui.addFolder('Camera look at');
         const paramsPosition = {
           x: this.camera.position.x,
           y: this.camera.position.y,

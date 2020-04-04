@@ -12,7 +12,6 @@ export class Character {
   walkAction;
   group;
   character;
-  lookAtObject;
 
   constructor(gltf, camera) {
     const inputManager = new InputManager();

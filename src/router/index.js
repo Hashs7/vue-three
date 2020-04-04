@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Lights from '../views/Lights.vue';
 import Camera from '../views/Camera.vue';
 import Character from "../views/Character";
+import LoadModel from "../views/LoadModel";
 import Word from "../views/Word";
 
 Vue.use(VueRouter);
@@ -13,6 +14,9 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    beforeEnter: (to, from, next) => {
+      next('/character')
+    }
   },
   {
     path: '/lights',
@@ -33,6 +37,11 @@ const routes = [
     path: '/word',
     name: 'word',
     component: Word,
+  },
+  {
+    path: '/load-model',
+    name: 'load-model',
+    component: LoadModel,
   },
 ];
 

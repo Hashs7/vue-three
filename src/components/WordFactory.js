@@ -39,7 +39,7 @@ export default class WordFactory {
 
     this.world.addBody(ground);
 
-    this.addWord('Pute');
+    this.addWord('Cuisine');
   }
 
   addWord(text) {
