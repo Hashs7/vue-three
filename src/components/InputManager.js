@@ -18,15 +18,15 @@ export class InputManager {
   setInputReceiver(receiver) {
     this.inputReceiver = receiver;
   }
+
   onKeyDown(event) {
-    if (this.inputReceiver === undefined) return;
+    if (!this.inputReceiver) return;
     // this.inputReceiver.handleKeyboardEvent(event, event.code, true);
     this.inputReceiver.handleKeyboardEvent(event, event.which, true);
   }
 
   onKeyUp(event) {
-    if (this.inputReceiver === undefined) return;
+    if (!this.inputReceiver) return;
     this.inputReceiver.handleKeyboardEvent(event, event.which, false);
   }
-
 }

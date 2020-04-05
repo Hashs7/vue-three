@@ -8,7 +8,6 @@
   import { TextureLoader } from "three/src/loaders/TextureLoader";
   import { Character } from "../components/Character";
   import LoadManager from "../components/LoadManager";
-  import * as dat from 'dat.gui';
 
   export default {
     name: 'Character',
@@ -32,7 +31,7 @@
       });
     },
     beforeDestroy() {
-      this.destroy()
+      this.character.destroy();
     },
     computed: {
       scene() {
@@ -55,24 +54,35 @@
         this.light = new THREE.HemisphereLight(0xffffff, 0x444444);
         this.scene.add(this.light);
         this.addSkybox();
-        const loader = LoadManager;
-        loader.loadGLTF('./assets/models/soldier.glb', (gltf) => {
-          console.log(gltf);
+        LoadManager.loadGLTF('./assets/models/soldier.glb', (gltf) => {
           this.character = new Character(gltf, this.camera);
-          this.scene.add(this.character.group);
           this.initLookAtObject();
-          this.buildGUI();
+          this.scene.add(this.character.group);
         });
         this.addFloor();
         this.mainLoop();
       },
 
+      initLookAtObject() {
+        this.lookAtObject = new THREE.Vector3(this.character.group.position.x, this.character.group.position.y,  this.character.group.position.z);
+        this.camera.lookAt(this.lookAtObject.x, this.lookAtObject.y, this.lookAtObject.z);
+      },
+
       mainLoop() {
         if (this.character) {
-          this.character.update()
+          this.character.update();
         }
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.mainLoop);
+      },
+
+      updateLookAt(params) {
+        this.lookAtObject.set(params.x, params.y, params.z);
+        this.camera.lookAt(
+          this.lookAtObject.x + this.character.group.position.x,
+          this.lookAtObject.y + this.character.group.position.y,
+          this.lookAtObject.z + this.character.group.position.z,
+        );
       },
 
       addSkybox() {
@@ -113,59 +123,6 @@
           return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
         });
         return materialArray;
-      },
-
-      destroy() {
-        this.gui.destroy();
-      },
-
-      initLookAtObject() {
-        const geometry = new THREE.BoxBufferGeometry( 10, 10, 10 );
-        const material = new THREE.MeshBasicMaterial({ color: 0xce214a });
-
-        this.lookAtObject = new THREE.Mesh( geometry, material );
-        console.log('group', this.character.group);
-        this.lookAtObject.position.set(this.character.group.position.x, this.character.group.position.y, this.character.group.position.z);
-        this.camera.lookAt(this.lookAtObject.position.x, this.lookAtObject.position.y, this.lookAtObject.position.z);
-        this.scene.add(this.lookAtObject);
-      },
-
-      buildGUI() {
-        this.gui = new dat.GUI();
-        const folderPosition = this.gui.addFolder('Camera position');
-        const folderLookAt = this.gui.addFolder('Camera look at');
-        const paramsPosition = {
-          x: this.camera.position.x,
-          y: this.camera.position.y,
-          z: this.camera.position.z,
-        };
-        const paramsLookAt = {
-          x: this.lookAtObject.position.x,
-          y: this.lookAtObject.position.y,
-          z: this.lookAtObject.position.z,
-        };
-        folderPosition.add(paramsPosition, 'x', -1000, 1000).onChange(() => this.updateCamera(paramsPosition));
-        folderPosition.add(paramsPosition, 'y', -1000, 1000).onChange(() => this.updateCamera(paramsPosition));
-        folderPosition.add(paramsPosition, 'z', -1000, 1000).onChange(() => this.updateCamera(paramsPosition));
-        folderPosition.open();
-
-        folderLookAt.add(paramsLookAt, 'x', -1000, 1000).onChange(() => this.updateLookAt(paramsLookAt));
-        folderLookAt.add(paramsLookAt, 'y', -1000, 1000).onChange(() => this.updateLookAt(paramsLookAt));
-        folderLookAt.add(paramsLookAt, 'z', -1000, 1000).onChange(() => this.updateLookAt(paramsLookAt));
-        folderLookAt.open();
-      },
-
-      updateCamera(params) {
-        this.camera.position.set(params.x, params.y, params.z);
-      },
-
-      updateLookAt(params) {
-        this.lookAtObject.position.set(params.x, params.y, params.z);
-        this.camera.lookAt(
-          this.lookAtObject.position.x + this.character.group.position.x,
-          this.lookAtObject.position.y + this.character.group.position.y,
-          this.lookAtObject.position.z + this.character.group.position.z,
-        );
       },
     },
   }

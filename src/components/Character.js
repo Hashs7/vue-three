@@ -12,10 +12,11 @@ export class Character {
   walkAction;
   group;
   character;
+  wakable = true;
 
   constructor(gltf, camera) {
-    const inputManager = new InputManager();
-    inputManager.setInputReceiver(this);
+    this.inputManager = new InputManager();
+    this.inputManager.setInputReceiver(this);
 
     gltf.scene.scale.set(0.2, 0.2, 0.2);
     gltf.scene.position.set(0, 0, 0);
@@ -32,9 +33,15 @@ export class Character {
     this.mixer = new THREE.AnimationMixer(this.character);
     this.setAnimations(gltf.animations);
     this.activateAllActions();
+    this.updateLookAt();
+  }
+
+  destroy() {
+    this.inputManager.setInputReceiver(null);
   }
 
   handleKeyboardEvent(event, code, pressed) {
+    if (!this.wakable) return;
     if (!pressed) {
       this.isWalking = false;
       this.prepareCrossFade(this.walkAction, this.idleAction);
@@ -84,6 +91,15 @@ export class Character {
       default:
         break;
     }
+    this.updateLookAt();
+  }
+
+  updateLookAt() {
+    this.camera.lookAt(
+      this.group.position.x,
+      this.group.position.y,
+      this.group.position.z + 60,
+    );
   }
 
   update() {
@@ -94,6 +110,10 @@ export class Character {
     if (this.isWalking) return;
     this.prepareCrossFade(this.idleAction, this.walkAction);
     this.isWalking = true;
+  }
+
+  setWalkable(value) {
+    this.wakable = value;
   }
 
   setAnimations(animations) {

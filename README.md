@@ -1,5 +1,9 @@
 # vue-three
 
+
+See in action at https://vue-three.netlify.com/
+
+
 ## Project setup
 ```
 npm install
@@ -13,11 +17,6 @@ npm run dev
 ### Compiles and minifies for production
 ```
 npm run build
-```
-
-### Run your tests
-```
-npm run test
 ```
 
 ### Lints and fixes files

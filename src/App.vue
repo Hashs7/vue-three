@@ -2,6 +2,7 @@
   <div id="app">
     <Loader />
     <nav class="router">
+      <router-link to="/camera" class="router__link">Camera</router-link>
       <router-link to="/character" class="router__link">Character</router-link>
       <router-link to="/word" class="router__link">Word</router-link>
       <router-link to="/load-model" class="router__link">Load model</router-link>
