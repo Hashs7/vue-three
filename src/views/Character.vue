@@ -56,7 +56,7 @@
         this.addSkybox();
         LoadManager.loadGLTF('./assets/models/soldier.glb', (gltf) => {
           this.character = new Character(gltf, this.camera);
-          this.initLookAtObject();
+          // this.initLookAtObject();
           this.scene.add(this.character.group);
         });
         this.addFloor();
@@ -74,15 +74,6 @@
         }
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.mainLoop);
-      },
-
-      updateLookAt(params) {
-        this.lookAtObject.set(params.x, params.y, params.z);
-        this.camera.lookAt(
-          this.lookAtObject.x + this.character.group.position.x,
-          this.lookAtObject.y + this.character.group.position.y,
-          this.lookAtObject.z + this.character.group.position.z,
-        );
       },
 
       addSkybox() {

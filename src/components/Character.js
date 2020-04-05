@@ -31,6 +31,11 @@ export class Character {
     this.character.position.set(0,10,0);
     this.character.scale.set(1,1,1);
     this.mixer = new THREE.AnimationMixer(this.character);
+    gsap.to(this.character.rotation, {
+      z: toRadian(180),
+      duration: .3,
+    });
+
     this.setAnimations(gltf.animations);
     this.activateAllActions();
     this.updateLookAt();
@@ -98,7 +103,7 @@ export class Character {
     this.camera.lookAt(
       this.group.position.x,
       this.group.position.y,
-      this.group.position.z + 60,
+      this.group.position.z + 150,
     );
   }
 

@@ -124,7 +124,7 @@
         const material = new THREE.MeshBasicMaterial({ color: 0xce214a });
 
         this.lookAtObject = new THREE.Mesh( geometry, material );
-        this.lookAtObject.position.set(this.character.group.position.x, this.character.group.position.y, this.character.group.position.z);
+        this.lookAtObject.position.set(this.character.group.position.x, this.character.group.position.y + 140, this.character.group.position.z + 150);
         this.camera.lookAt(this.lookAtObject.position.x, this.lookAtObject.position.y, this.lookAtObject.position.z);
         this.scene.add(this.lookAtObject);
       },
