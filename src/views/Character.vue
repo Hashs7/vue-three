@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span class="help">Utilisez les flèches directionnels pour vous déplacer</span>
   </div>
 </template>
 
@@ -118,4 +119,14 @@
     },
   }
 </script>
+
+<style>
+  .help {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    padding: 8px 16px;
+  }
+</style>
 
