@@ -12,6 +12,7 @@ export class Character {
   walkAction;
   group;
   character;
+  speed = 9;
   wakable = true;
 
   constructor(gltf, camera) {
@@ -60,7 +61,12 @@ export class Character {
           z: toRadian(180),
           duration: .3,
         });
-        this.group.position.z += 10;
+
+        gsap.to(this.group.position, {
+          z: `+=${this.speed}`,
+          duration: .1,
+        });
+        // this.group.position.z += 10;
         this.setWalking();
         break;
 
@@ -70,7 +76,11 @@ export class Character {
           z: toRadian(0),
           duration: .3,
         });
-        this.group.position.z -= 10;
+        gsap.to(this.group.position, {
+          z: `-=${this.speed}`,
+          duration: .1,
+        });
+        // this.group.position.z -= 10;
         this.setWalking();
         break;
 
@@ -80,7 +90,11 @@ export class Character {
           z: toRadian(-90),
           duration: 0.3,
         });
-        this.group.position.x +=10;
+        gsap.to(this.group.position, {
+          x: `+=${this.speed}`,
+          duration: .1,
+        });
+        // this.group.position.x +=10;
         this.setWalking();
         break;
 
@@ -90,7 +104,12 @@ export class Character {
           z: toRadian(90),
           duration: 0.3,
         });
-        this.group.position.x -= 10;
+
+        gsap.to(this.group.position, {
+          x: `-=${this.speed}`,
+          duration: .1,
+        });
+        // this.group.position.x -= 10;
         this.setWalking();
         break;
       default:
