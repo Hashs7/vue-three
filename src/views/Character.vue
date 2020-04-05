@@ -56,7 +56,7 @@
         this.scene.add(this.light);
         this.addSkybox();
         const loader = LoadManager;
-        loader.loadGLTF('./models/soldier.glb', (gltf) => {
+        loader.loadGLTF('./assets/models/soldier.glb', (gltf) => {
           console.log(gltf);
           this.character = new Character(gltf, this.camera);
           this.scene.add(this.character.group);
